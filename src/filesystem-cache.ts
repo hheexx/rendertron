@@ -67,9 +67,8 @@ export class FilesystemCache {
   async clearCache(key: string) {
     if (fs.existsSync(path.join(this.getDir(''), key + '.json'))) {
       fs.unlink(path.join(this.getDir(''), key + '.json'), (err) => {
-        if (err) {
-          console.log(`ERROR removing cache: ${err}`);
-        }
+        if (err) throw err;
+        console.log(`removed from cache: ${key}`);
       });
     }
   }
@@ -111,7 +110,6 @@ export class FilesystemCache {
         dirsDate = dirsDate.slice(0, toRemove);
         dirsDate.forEach((rmDir) => {
           if (rmDir.fileName !== key + '.json') {
-            console.log(`removing cache: ${rmDir.fileName}`);
             this.clearCache(rmDir.fileName);
           }
         });
