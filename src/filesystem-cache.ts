@@ -66,7 +66,11 @@ export class FilesystemCache {
 
   async clearCache(key: string) {
     if (fs.existsSync(path.join(this.getDir(''), key + '.json'))) {
-      fs.unlinkSync(path.join(this.getDir(''), key + '.json'));
+      fs.unlink(path.join(this.getDir(''), key + '.json'), (err) => {
+        if (err) {
+          console.log(`ERROR removing cache: ${err}`);
+        }
+      });
     }
   }
 
